@@ -31,7 +31,7 @@
 export default {
   async asyncData({ $axios }) {
     try {
-      let ownerResponse = await $axios.$get("http://localhost:4000/users");
+      let ownerResponse = await $axios.$get("http://localhost:3000/users");
        
       return {
         users: ownerResponse.users

@@ -12,7 +12,7 @@
 export default {
   async asyncData({ $axios }) {
     try {
-      let response = await $axios.$get("http://localhost:4000/decks")
+      let response = await $axios.$get("http://localhost:3000/decks")
      
       return{
         decks : response.decks
