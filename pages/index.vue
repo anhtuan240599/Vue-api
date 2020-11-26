@@ -4,6 +4,7 @@
       <div>
         {{ deck.name }}
       </div>
+      <img :src="deck.image" />
     </div>
   </div>
 </template>

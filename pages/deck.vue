@@ -12,14 +12,10 @@
           <label >Description</label>
           <input type="text"  v-model="description" />
           <label>Owner</label>
-            <select v-model="owner">
-                <option v-for="user in users" :value="user._id" :key="user._id">
-                    {{ user._id }} 
-                </option>
-            </select>
+          <input v-model="owner" />
           <label>Image</label>
-          <input type="file" @change="onFileSelected"/>
-          <p> {{fileName }}</p>
+          <input type="file" multiple @change="onFileSelected"/>
+          <p> {{ fileName }}</p>
           <span @click="onAddDeck" >Add deck</span>
         </div>
       </form>
@@ -31,7 +27,7 @@
 export default {
   async asyncData({ $axios }) {
     try {
-      let ownerResponse = await $axios.$get("http://localhost:3000/users");
+      let ownerResponse = await $axios.$get("http://localhost:3000/api/auth/user");
        
       return {
         users: ownerResponse.users
@@ -52,8 +48,8 @@ export default {
   },
   methods: {
       onFileSelected(event) {
-          this.selectedFile = event.target.files[0];
-          this.fileName = event.target.files[0].name
+          this.selectedFile = event.target.files[1];
+          this.fileName = event.target.files[1].name
       },
       async onAddDeck() {
           let data = new FormData();
@@ -61,9 +57,9 @@ export default {
           data.append("description", this.description)
           data.append("owner", this.owner)
           data.append("image", this.selectedFile, this.selectedFile.name)
-
-          let result = await this.$axios.$post('http://localhost:4000/decks', data);
-  
+          
+          let result = await this.$axios.$post('http://localhost:3000/decks', data);
+          
           this.$router.push("/")
       }
   }

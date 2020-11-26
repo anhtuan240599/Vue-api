@@ -25,7 +25,6 @@
 <script>
 export default {
   middleware: "auth",
-
   auth: {
     strategies: {
       local: false
