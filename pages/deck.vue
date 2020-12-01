@@ -9,14 +9,14 @@
             <option value="Tuan">Tuan </option>
             <option value="Huynh">Huynh </option>
           </select>
-          <label >Description</label>
-          <input type="text"  v-model="description" />
+          <label>Description</label>
+          <input type="text" v-model="description" />
           <label>Owner</label>
           <input v-model="owner" />
           <label>Image</label>
-          <input type="file" multiple @change="onFileSelected"/>
-          <p> {{ fileName }}</p>
-          <span @click="onAddDeck" >Add deck</span>
+          <input type="file" multiple @change="onFileSelected" />
+          <p>{{ fileName }}</p>
+          <span @click="onAddDeck">Add deck</span>
         </div>
       </form>
     </div>
@@ -27,8 +27,10 @@
 export default {
   async asyncData({ $axios }) {
     try {
-      let ownerResponse = await $axios.$get("http://localhost:3000/api/auth/user");
-       
+      let ownerResponse = await $axios.$get(
+        "http://localhost:3000/api/auth/user"
+      );
+
       return {
         users: ownerResponse.users
       };
@@ -37,31 +39,32 @@ export default {
     }
   },
   data() {
-      return {
-          owner: null,
-          name: "",
-          description: "",
-          selectedFile: null,
-          fileName: ""
-
-      }
+    return {
+      owner: null,
+      name: "",
+      description: "",
+      selectedFile: [],
+      fileName: [],
+      image: []
+    };
   },
   methods: {
-      onFileSelected(event) {
-          this.selectedFile = event.target.files[1];
-          this.fileName = event.target.files[1].name
-      },
-      async onAddDeck() {
-          let data = new FormData();
-          data.append("name", this.name)
-          data.append("description", this.description)
-          data.append("owner", this.owner)
-          data.append("image", this.selectedFile, this.selectedFile.name)
-          
-          let result = await this.$axios.$post('http://localhost:3000/decks', data);
-          
-          this.$router.push("/")
-      }
+    onFileSelected(event) {
+      this.image = event.target.files
+
+      console.log(typeof(this.image))
+    },
+    async onAddDeck() {
+      let data = new FormData();
+      data.append("name", this.name);
+      data.append("description", this.description);
+      data.append("owner", this.owner);
+      data.append("image", this.image);
+
+      let result = await this.$axios.$post("http://localhost:3000/decks", data);
+
+      this.$router.push("/");
+    }
   }
 };
 </script>
