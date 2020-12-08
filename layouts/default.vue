@@ -27,6 +27,9 @@
     <template v-if="$auth.$state.loggedIn">
       <div>{{$auth.$state.user.email}}</div>
     </template>
+    <template v-else >
+      <div>No user</div>
+    </template>
     <section class="main-content columns">
       <aside class="column is-2 section">
         <p class="menu-label is-hidden-touch">

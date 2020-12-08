@@ -3,7 +3,7 @@
         <div v-for="review in reviews" :key="review._id">
             <div>
                 Name :
-                <span>{{ review.user.email }}</span>
+                <span>{{ review.user.name }}</span>
             </div>
             <div>
                 Headline :

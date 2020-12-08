@@ -2,12 +2,18 @@
   <div>
     <div v-for="deck in decks" :key="deck._id">
       <div>
-      <nuxt-link :to="`/decks/${deck._id}`">
-        <div>
-          {{ deck.name }}
-        </div>
-        <img :src="deck.image" />
-      </nuxt-link>
+       
+          <div>
+            {{ deck.name }}
+          </div>
+        <nuxt-link :to="`/users/${deck.owner._id}`">
+          <div>
+            {{ deck.owner._id }}
+          </div>
+        </nuxt-link>
+        <nuxt-link :to="`/decks/${deck._id}`">
+          <img :src="deck.image" />
+        </nuxt-link>
       </div>
     </div>
   </div>

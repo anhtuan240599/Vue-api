@@ -9,6 +9,7 @@
    
     <div>
       <div>Review</div>
+      <ReviewSelection :deck="deck" :reviews="reviews" />
       <b> Add photo </b>
       <input type="file" @change="onFileSelected" />
       <p>{{fileName}}</p>
@@ -23,16 +24,24 @@
 </template>
 
 <script>
-
+import ReviewSelection from "~/components/ReviewSelection"
 export default {
+  component:{
+    ReviewSelection
+  },
   async asyncData({ $axios, params }) {
     try {
-      let response = await $axios.$get(
-        `http://localhost:3000/decks/${params.id}`
-      );
-      return {
-        deck: response.deck
-      };
+      let singleDeck = $axios.$get(`http://localhost:3000/decks/${params.id}`);
+      let manyReview = $axios.$get(`http://localhost:3000/reviews/${params.id}`);
+      const [deckResponse, reviewResponse] = await Promise.all([
+          singleDeck,
+          manyReview
+      ])
+      return{
+        deck : deckResponse.deck,
+        reviews : reviewResponse.reviews  
+      }
+
     } catch (err) {
       console.log(err);
     }
@@ -61,7 +70,7 @@ export default {
         let response = await this.$axios.$post(`http://localhost:3000/reviews/${this.$route.params.id}`,data)
 
         if(response.success) {
-          this.$router.push(`/decks/${this.$route.params.id}`)
+          this.$router.push(`/reviews/${this.$route.params.id}`)
         }
       } catch (err) {
         console.log(err)

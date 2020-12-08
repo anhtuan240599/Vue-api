@@ -21,7 +21,7 @@ export default {
   ],
 
   server: {
-    port: 8000, // default: 3000
+    port: 8888, // default: 3000
     host: '0.0.0.0' // default: localhost
   },
 
@@ -59,7 +59,7 @@ export default {
       local: {
         endpoints: {
           login: { url: 'http://localhost:3000/api/auth/login', method: 'post', propertyName: 'token' },
-          logout: { url: '/api/auth/logout', method: 'post' },
+          logout: { url: 'http://localhost:3000/api/auth/logout', method: 'post' },
           user: { url: 'http://localhost:3000/api/auth/user', method: 'get', propertyName: 'user' },
           propertyName: "token"
         },

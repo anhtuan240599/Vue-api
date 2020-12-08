@@ -11,8 +11,6 @@
           </select>
           <label>Description</label>
           <input type="text" v-model="description" />
-          <label>Owner</label>
-          <input v-model="owner" />
           <label>Image</label>
           <input type="file" multiple @change="onFileSelected" />
           <p>{{ fileName }}</p>
@@ -40,7 +38,6 @@ export default {
   },
   data() {
     return {
-      owner: null,
       name: "",
       description: "",
       selectedFile: [],
@@ -58,7 +55,6 @@ export default {
       let data = new FormData();
       data.append("name", this.name);
       data.append("description", this.description);
-      data.append("owner", this.owner);
       data.append("image", this.image);
 
       let result = await this.$axios.$post("http://localhost:3000/decks", data);

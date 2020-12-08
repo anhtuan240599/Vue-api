@@ -2,7 +2,7 @@
   <div>
     <div class="form-group">
       <input
-        v-model="email"
+        v-model="name"
         type="text"
         class="form-control"
         placeholder="Your email *"
@@ -19,6 +19,21 @@
       />
     </div>
     <button type="button" class="btnSubmit" @click="onLogin">Submit</button>
+    <div>
+      <div>
+        Quên mật khẩu
+      </div>
+      <input
+        v-model="email"
+        type="text"
+        class="form-control"
+        placeholder="Your email *"
+        value=""
+      />
+      <button type="button" class="btnLostPass" @click="onLostPass">Submit</button>
+      <b> {{message}} </b>
+    </div>
+    
   </div>
 </template>
 
@@ -32,9 +47,11 @@ export default {
   },
   data() {
     return {
+      email: "",
+      message: "",
       login: {
-        email: "",
-        password: ""
+        name: "",
+        password: "",
       }
     };
   },
@@ -43,7 +60,7 @@ export default {
       try {
         await this.$auth.loginWith("local", {
           data: {
-            email: this.email,
+            name: this.name,
             password: this.password
           }
         });
@@ -51,6 +68,22 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    async onLostPass() {
+      try {
+        let data = {
+          email : this.email
+        }
+        let result = await this.$axios.$post("http://localhost:3000/api/auth/lostPassword",data)
+        console.log(result.message)
+        if (result.success) {
+          this.message = result.message
+        }
+      } catch (err) {
+        this.message = "Khong tim thay tai khoan co email nay"
+
+      }
+      
     }
   }
 };

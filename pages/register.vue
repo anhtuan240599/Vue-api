@@ -7,19 +7,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input v-model="firstName" type="text" class="form-control" placeholder="Your first name *" value=""/>
+                                <input v-model="name" type="text" class="form-control" placeholder="Your MSSV*" value=""/>
                             </div>
-                            <div class="form-group">
-                                <input v-model="lastName" type="text" class="form-control" placeholder="Your last name*" value=""/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <input v-model="email" type="text" class="form-control" placeholder="Your Email*" value=""/>
                             </div>
                             <div class="form-group">
                                 <input v-model="password" type="text" class="form-control" placeholder="Your Password *" value=""/>
                             </div>
+                            <select v-model="yearID">
+                                <option v-for="year in years" :value="year._id" :key="year._id" >{{ year.schoolYear }}</option>
+                            </select>
                         </div>
                     </div>
                     <button type="button" class="btnSubmit" @click="onRegister">Submit</button>
@@ -38,10 +36,23 @@
 export default {
     middleware: "auth",
     auth: "guest",
+    async asyncData({ $axios }) {
+    try {
+      let response = await $axios.$get(
+        "http://localhost:3000/api/auth/year"
+      );
+
+      return {
+        years: response.foundYear
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  },
     data() {
         return {
-            firstName: "",
-            lastName: "",
+            name:"",
+            yearID:"",
             email: "",
             password: "",
         }
@@ -50,8 +61,8 @@ export default {
         async onRegister(){
             try {
                 let data = {
-                    firstName: this.firstName,
-                    lastName : this.lastName,
+                    name: this.name,
+                    yearID : this.yearID,
                     email : this.email,
                     password : this.password
                 }
@@ -62,7 +73,7 @@ export default {
                 if (response.success) {
                     this.$auth.loginWith("local", {
                         data: {
-                            email: this.email,
+                            name: this.name,
                             password: this.password
                         }
                     })
