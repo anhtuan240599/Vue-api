@@ -9,8 +9,8 @@
        
       </div>
       <div>
-        <label>Last Name</label>
-        <input v-model="lastName" :placeholder="$auth.$state.user.lastName" />
+        <label>FullName</label>
+        <input v-model="fullName"  />
       </div>
       <div>
         <label>Email</label>
@@ -51,16 +51,17 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
-      password: ""
+      password: "",
+      fullName: ""
     };
   },
   methods: {
     async onUpdateProfile() {
       let data = {
-        firstName: this.firstName,
-        lastName: this.lastName,
+
         email: this.email,
-        password: this.password
+        password: this.password,
+        fullName: this.fullName
       };
       try {
         let response = await this.$axios.$put(
@@ -68,8 +69,7 @@ export default {
           data
         );
         if (response.success) {
-            (this.firstName = ""),
-            (this.lastName = ""),
+            (this.fullName = "")
             (this.email = ""),
             (this.password = "");
 

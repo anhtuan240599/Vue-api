@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     onFileSelected(event) {
-      this.image = event.target.files
+      this.image = event.target.files[0]
 
       console.log(typeof(this.image))
     },
