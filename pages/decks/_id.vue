@@ -18,6 +18,7 @@
       <span> User Review </span>
       <ReviewSelection :deck="deck" :reviews="reviews" />
       <div v-if="commented">
+        <img :src="$auth.$state.user.avatar">
         <div>
           Name :
           <span>{{ $auth.$state.user.email }}</span>
@@ -110,7 +111,7 @@ export default {
 
         let response = await this.$axios.$post(
           `http://localhost:3000/reviews/${this.$route.params.id}`,
-          data
+          data,
         );
 
         if (response.success) {

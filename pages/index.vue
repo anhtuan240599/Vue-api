@@ -84,9 +84,11 @@ export default {
     }
   },
   created() {
-    socket.emit('Created','Tuan')
+    socket.emit('Created',{
+      user : `$auth.$state.user.email`
+    })
     socket.on('Created',(data) => {
-     
+        
     })
     socket.on('chat-message' , (data) => {
       this.messages.push({message: data , type: 1})
