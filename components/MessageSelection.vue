@@ -5,15 +5,10 @@
 </style>
 <template>
     <div>
-        <div v-for="mess in mess1" :key="mess._id">
-            <div>
-                <span :class="'float-right'">{{ mess.message }}</span>
+        <div v-for="message in mess" :key="message._id">
+            <div>   
+                <span :class="{ 'float-right': message.from === $auth.$state.user._id }">{{ message.message }}</span>
                 <br>
-            </div>
-        </div>
-        <div v-for="mess in mess2" :key="mess._id">
-            <div>
-                <span>{{ mess.message }}</span>
             </div>
         </div>
     </div>
@@ -22,8 +17,9 @@
 <script>
 
 export default {
+
     props
-        : ["user","mess1","mess2"]
+        : ["user","mess"]
     
 }
 </script>

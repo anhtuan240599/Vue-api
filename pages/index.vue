@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     send() {
-      console.log(typeof(this.newMessage))
+      console.log(typeof(this.messages))
       this.messages.push({message: this.newMessage , type: 0})
       socket.emit('chat-message', this.newMessage)
       this.newMessage = null

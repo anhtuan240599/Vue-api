@@ -54,7 +54,7 @@ export default {
     async onAddDeck() {
       let data = new FormData();
       data.append("name", this.name);
-      data.append("description", this.description);
+      data.append("title", this.description);
       data.append("image", this.image);
 
       let result = await this.$axios.$post("http://localhost:3000/decks", data);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="$auth.$state.loggedIn">
-      <div>{{$auth.$state.user.name}}</div>
+      <div>{{$auth.$state.user.email}}</div>
     </template>
     <template v-else>
       <div>No user</div>

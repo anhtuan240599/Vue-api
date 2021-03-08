@@ -4,7 +4,11 @@
       {{ user.email }}
     </div>
     <div>
-      <MessageSelection :user="user" :mess1="mess1" :mess2="mess2" />
+      {{$auth.$state.user.name}}
+    </div>
+    <input id="name">
+    <div>
+      <MessageSelection :user="user" :mess="mess" />
       <ul>
         <li v-for="(message, index) in messages" :key="index">
           <span :class="{ 'float-right': message.type === 0 }">{{
@@ -32,6 +36,12 @@ export default {
   component: {
     MessageSelection
   },
+  middleware: "auth",
+  auth: {
+    strategies: {
+      local: false
+    }
+  },
   async asyncData({ $axios, params }) {
     try {
       let response = await $axios.$get(
@@ -44,12 +54,10 @@ export default {
         response,
         manyChat
       ]);
-      console.log(chatResponse.messages1)
+      console.log(chatResponse)
       return {
         user: userResponse.user,
-        mess1 : chatResponse.messages1,
-        mess2 : chatResponse.messages2
-        
+        mess : chatResponse.messages,
       };
       
     } catch (err) {
@@ -101,7 +109,7 @@ export default {
   },
   created() {
     socket.emit("Created", {
-      user: `$auth.$state.user.email`
+      user: $state.user.name
     });
     socket.on("Created", data => {});
     socket.on("chat-message", data => {
