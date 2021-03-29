@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div @click.prevent="addName">
+    <div @click.prevent="addName(user.email, $auth.$state.user.email)">
       {{ user.email }}
     </div>
     <div>
-      {{$auth.$state.user.name}}
+      {{ $auth.$state.user.name }}
     </div>
-    <input id="name">
+    <input id="name" />
     <div>
       <MessageSelection :user="user" :mess="mess" />
       <ul>
@@ -20,8 +20,10 @@
         <small v-if="typing">User is typing</small>
         <form @submit.prevent="send">
           <input type="text" v-model="newMessage" />
+          <input type="file" accept="image/*" @change="loadFile">
           <input type="submit" @click="onAddChat" />
         </form>
+        <img id="output"/>
       </div>
     </div>
     <div></div>
@@ -54,12 +56,11 @@ export default {
         response,
         manyChat
       ]);
-      console.log(chatResponse)
       return {
         user: userResponse.user,
         mess : chatResponse.messages,
       };
-      
+
     } catch (err) {
       console.log(err);
     }
@@ -67,11 +68,16 @@ export default {
   data() {
     return {
       newMessage: null,
+      image: null,
+      selectedFile: [],
+      fileName: [],
       messages: [],
       typing: false,
       ready: false,
       user: null,
-      message: null
+      message: null,
+      number: 1,
+      tinnhan:null,
     };
   },
   watch: {
@@ -85,10 +91,25 @@ export default {
       socket.emit("chat-message", this.newMessage);
       this.newMessage = null;
     },
-    addName() {
+    addName(to,from) {
       this.ready = true;
-      socket.emit("joined");
+      const friend = to + from
+      const user =  from + to
+      socket.emit("joined",{friend,user});
     },
+    onFileSelected(event) {
+      this.image = event.target.files[0]
+      console.log(this.image)
+    },
+    loadFile(){
+
+    var reader = new FileReader();
+    reader.onload = function(){
+      var output = document.getElementById('output');
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+},
     async onAddChat() {
       try {
         let data = new FormData();
@@ -109,7 +130,7 @@ export default {
   },
   created() {
     socket.emit("Created", {
-      user: $state.user.name
+      user : '',
     });
     socket.on("Created", data => {});
     socket.on("chat-message", data => {

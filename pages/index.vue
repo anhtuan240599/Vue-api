@@ -6,6 +6,9 @@
 
 <template>
   <div>
+    <h1>
+    
+    </h1>
     <div v-if="ready">
       <ul>
         <li v-for="(message,index) in messages" :key="index"> <span :class="{'float-right': message.type === 0 }">{{ message.message }}</span></li>
@@ -20,7 +23,7 @@
     </div>
     <div v-for="deck in decks" :key="deck._id">
       <div>
-        <div @click.prevent="addName">
+        <div @click.prevent="addName(deck.owner.name)" >
             {{ deck.owner.name}}
         </div>
         <nuxt-link :to="`/decks/${deck._id}`">
@@ -64,6 +67,7 @@ export default {
     typing : false,
     ready : false,
     user : null,
+    number : Number ,
     }
   },
   watch: {
@@ -78,14 +82,14 @@ export default {
       socket.emit('chat-message', this.newMessage)
       this.newMessage = null
     },
-    addName() {
+    addName(userName) {
       this.ready = true
       socket.emit('joined')
     }
   },
   created() {
     socket.emit('Created',{
-      user : `$auth.$state.user.email`
+      user : 'this.$store.state.auth.user.name',
     })
     socket.on('Created',(data) => {
         

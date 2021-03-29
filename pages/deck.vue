@@ -13,7 +13,7 @@
           <input type="text" v-model="description" />
           <label>Image</label>
           <input type="file" multiple @change="onFileSelected" />
-          <p>{{ fileName }}</p>
+          <p>{{ selectedFile }}</p>
           <span @click="onAddDeck">Add deck</span>
         </div>
       </form>
@@ -48,6 +48,7 @@ export default {
   methods: {
     onFileSelected(event) {
       this.image = event.target.files[0]
+      this.selectedFile = event.target.files[0]
 
       console.log(typeof(this.image))
     },
